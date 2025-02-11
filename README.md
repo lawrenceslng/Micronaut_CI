@@ -122,5 +122,10 @@ publishing {
 }
 ```
 
+To allow publishing of packages without conflict, the version in `build.gradle` needs to be unique. We can change that to the below:
+```
+version = "0.1-${System.currentTimeMillis()}"
+```
+
 The package is then published as shown in the lower right corner of the repo here:
 ![img_2.png](img_2.png)
