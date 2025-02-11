@@ -1,0 +1,43 @@
+name: Assignment 6 Build and Deploy Micronaut
+
+on:
+  push:
+    branches:
+      - main  # Trigger after PR merge
+
+jobs:
+  build:
+    name: Test and Build
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: mn_playground
+          MYSQL_USER: sherlock
+          MYSQL_PASSWORD: elementary
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -u$MYSQL_USER -p$MYSQL_PASSWORD"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java (JDK 21)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build with Gradle
+        run: ./gradlew build
