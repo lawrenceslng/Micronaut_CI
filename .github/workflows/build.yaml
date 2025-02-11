@@ -38,6 +38,7 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
-
-      - name: Build with Gradle
-        run: ./gradlew build
+        with:
+          gradle-version: "8.10" # Quotes required to prevent YAML converting to number
+      - name: Build with Gradle 8.10
+        run: gradle build
